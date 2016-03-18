@@ -28,6 +28,30 @@ public boolean crearConexion()
    try {
       Class.forName("com.mysql.jdbc.Driver");
        Connection conexion = DriverManager.getConnection("jdbc:mysql://www.db4free.net:3306/izv_dawm","izv_dawm","123456");
+       String sqlcomercio="CREATE TABLE JMComercio"+
+               "(idcomercio int Primary Key,"+
+               "nombre varchar(50),"+
+               "direccion varchar(100),"+
+               "tipo varchar(50))";
+       String sqlhorario="CREATE TABLE JMHorario"+
+               "(idhorario int Primary Key,"+
+               "dia varchar check(dia in ('lunes','martes','miercoles','jueves','viernes','sabado')),"+
+               "hinicio int,"+
+               "hfin int,"+
+               "minicio int,"+
+               "mfin int,"+
+               "idcomercio int,"+
+               "CONSTRAINT fk_idcomercio_jmcomercio FOREIGN KEY (idcomercio) REFERENCES JMComercio (idcomercio))";
+       Statement stmt=null;
+       try{
+           stmt=conexion.createStatement();
+           stmt.executeUpdate(sqlcomercio);
+           stmt.executeUpdate(sqlhorario);
+       }catch(SQLException e){
+           System.out.println(e.getMessage());
+           e.printStackTrace();
+       }
+               
    } catch (SQLException ex) {
        System.out.println(ex.getMessage());
       ex.printStackTrace();
